@@ -1,6 +1,14 @@
-// src/components/QuestionCard.tsx
+
 import React from 'react';
-import { AnswerObject } from '../types';
+
+
+
+export type AnswerObject = {
+  question: string;
+  answer: string;
+  correct: boolean;
+  correctAnswer: string;
+};
 
 type Props = {
   question: string;
