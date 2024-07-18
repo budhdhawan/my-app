@@ -1,7 +1,14 @@
-
 import React, { useState } from 'react';
 import QuestionCard from './components/QuestionCard';
 import { fetchQuizQuestions, Difficulty, QuestionState } from './API';
+import {
+  Wrapper,
+  QuizTitle,
+  ScoreText,
+  Button,
+  NextButton,
+  StyledQuestionCard,
+} from './App.styles';
 
 export type AnswerObject = {
   question: string;
@@ -9,7 +16,6 @@ export type AnswerObject = {
   correct: boolean;
   correctAnswer: string;
 };
-
 
 const TOTAL_QUESTIONS = 10;
 
@@ -62,14 +68,14 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <h1>QUIZ</h1>
+    <Wrapper>
+      <QuizTitle>QUIZ</QuizTitle>
       {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
-        <button className="start" onClick={startTrivia}>
+        <Button className="start" onClick={startTrivia}>
           Start
-        </button>
+        </Button>
       ) : null}
-      {!gameOver ? <p className="score">Score: {score}</p> : null}
+      {!gameOver ? <ScoreText>Score: {score}</ScoreText> : null}
       {loading && <p>Loading Questions...</p>}
       {!loading && !gameOver && (
         <QuestionCard
@@ -85,11 +91,11 @@ const App = () => {
       !loading &&
       userAnswers.length === number + 1 &&
       number !== TOTAL_QUESTIONS - 1 ? (
-        <button className="next" onClick={nextQuestion}>
+        <Button className="next" onClick={nextQuestion}>
           Next Question
-        </button>
+        </Button>
       ) : null}
-    </div>
+    </Wrapper>
   );
 };
 
