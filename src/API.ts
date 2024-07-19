@@ -18,11 +18,30 @@ export enum Difficulty {
 }
 
 export const fetchQuizQuestions = async (amount: number, difficulty: Difficulty): Promise<QuestionState[]> => {
-    const endpoint = `https://opentdb.com/api.php?amount=${amount}&difficulty=${difficulty}&type=multiple`;
+  const endpoint = `http://localhost:5000/api/quiz?amount=${amount}&difficulty=${difficulty}`;
+  
+  try {
+    const response = await fetch(endpoint);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
 
-  const data = await (await fetch(endpoint)).json();
-  return data.results.map((question: Question) => ({
-    ...question,
-    answers: shuffleArray([...question.incorrect_answers, question.correct_answer]),
-  }));
+    if (!data.results || !Array.isArray(data.results)) {
+      throw new Error('Invalid data format');
+    }
+    
+    return data.results.map((question: Question) => ({
+      ...question,
+      answers: shuffleArray([...question.incorrect_answers, question.correct_answer]),
+    }));
+    
+  } catch (error) {
+    console.error('Error fetching quiz questions:', error);
+    
+    throw error; 
+  }
 };
